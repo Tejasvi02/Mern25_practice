@@ -2,6 +2,8 @@
 // 1. ForOF Loop
 // 2. ForIn loop
 
+const { userInfo } = require("os");
+
 //for of is generally used for iteratable - Array, String, Map etc
 //gives values directly, no need to access with the index
 let fruits = ["Apple", "banana","orange"];
@@ -32,3 +34,11 @@ for(let car in cars){
 //in js array is also object so we can add key values to it
 fruits.x ="Strawberry"
 console.log(fruits.x)
+
+
+//for exporting into global variable in node_bsc
+module.exports = cars;
+ globalThis.userInfo = {
+    name: "Tej",
+    session: "Nodejs"
+ }
