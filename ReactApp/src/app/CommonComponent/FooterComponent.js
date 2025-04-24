@@ -1,13 +1,15 @@
 import React from "react"
 
-//This is a functional component
-let Footer = (props)=>{
-    
+//functional component
+
+export default function Footer(props) {
     return(
-        <div>
-            <h1>This is application footer {props.sessionName}</h1>
-        </div>
+        <>
+            <div className="footer">
+                © Copyright 2023 All rights reserved. &nbsp;|&nbsp; 
+                <a href="https://www.synergisticit.com/" target="_blank">SynergisticIT</a> &nbsp;|&nbsp; 
+                <a href="http://www.synergisticit.com/sitemap.xml" target="_blank">Sitemap</a>
+            </div>
+        </>
     )
 }
-
-export default Footer;

@@ -1,6 +1,12 @@
 import React, {Component} from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import "./app.css"
 import Footer from  "./CommonComponent/FooterComponent"
-import TejasviComponent from "./Tejasvi";
+//import TejasviComponent from "./Tejasvi";
+import Header from "./CommonComponent/HeaderComponent";
+import Home from "./CommonComponent/HomeComponent";
+import NotFound from "./CommonComponent/NotFoundComponent";
+import About from "./CommonComponent/AboutComponent";
 
 export default class ApplicationComponent extends Component {
 
@@ -35,25 +41,23 @@ export default class ApplicationComponent extends Component {
         }
     }
 
-    render(){
-        let name = "Joel", x=5, y = 9
-        
+    render(){     
+        console.log("Render method is called!!")
         return( //vitual dom or jsx code (javascript like xml structure)
-            <div>
-                <TejasviComponent header = {"Header from Application Component to Tejasvi"}></TejasviComponent>
-                <h1>This is coming from Application Component</h1>
-                <b>{name}</b>
-                <hr />
-                <b>Multiply 5*9 = {5*9} </b>
-                <hr />
-                <b>Sum 5+9 = {5+9} </b>
-                <hr />
-                <b>{this.state.userName}</b>
-                <hr />
-                <Footer sessionName={this.sessionName}/> 
-                {/* binding event to a button in react component */}
-                <button onClick={this.changeUserNameEvent}>Change User Name</button>
-            </div>            
+            <Router>
+                <div className="topdiv">
+                    <Header />
+                        <Routes>
+                            <Route path="/" element={<Home user={this.state.user} />}/>
+                            <Route path="home" element={<Home />}/>
+                            <Route path="about" element={<About />}/>
+                            <Route path="about/:id" element={<About />}/>
+                            <Route path="about/:id/:name" element={<About />}/>
+                            <Route path="*" element={<NotFound />} />
+                        </Routes>
+                    <Footer sessionName={this.sessionName}/>
+                </div>    
+            </Router>      
         )
     }
 }
