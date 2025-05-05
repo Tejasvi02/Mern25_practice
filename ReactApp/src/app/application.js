@@ -1,58 +1,78 @@
 import React, {Component} from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import "./app.css"
-import Footer from  "./CommonComponent/FooterComponent"
-//import TejasviComponent from "./Tejasvi";
+import "./app.css";
+import Footer from "./CommonComponent/FooterComponent";
 import Header from "./CommonComponent/HeaderComponent";
 import Home from "./CommonComponent/HomeComponent";
 import NotFound from "./CommonComponent/NotFoundComponent";
-import About from "./CommonComponent/AboutComponent";
+import About from "./CommonComponent/AboutComponent.js";
+import ComponentTypes from "./CommonComponent/ComponentTypes.js";
 
 export default class ApplicationComponent extends Component {
 
-    constructor(props){
+    /**
+     *
+     */
+    constructor(props) {
         super();
-        this.state ={
-            userName: "Edhoi",
-            userAddress: "abc"
+        this.state = {
+            userName : "react user ",
+            user : {
+                    userName : "Test User",
+                    userAge : 19
+                    }
         }
+        this.sessionName = "MERNStack - React Props"
     }
 
-    changeUserNameEvent = (evt) => {
-        // this.state.userName ="Tej" -  in this methhod, virtual dom will not be created
+    changeUserNameEvent = (userName)=>{
+
+        //this.state.userName = "Tejasvi" //with this way render method will not be called and no new virtual dom will be created
+
+        //we have registered API (callback) from react to make state changes and call render method
+        //so that new virtual dom gets created
+
         this.setState({
-            userName: `Dat-
-            This is coming from Application Component
-            This is coming from Application Component`
+            userName : userName
+            //userAddress : "Somewhere on earth!!!!!!"
         })
-        this.sessionName = "The session is on react and state and its virtual dom coupling!!!"
-        console.log(this.state.userName)
-        //alert("User name updated!")
+
+        //updating the state using force update - not recommended but can be used if needed
+
+        // this.state.userName = `Dat -  
+        //         This is coming from Application Component
+        //         This is coming from Application Component
+
+        //         This is coming from Application Component
+
+        //         This is coming from Application Component`
+
+        // this.forceUpdate()//it will directly call the render method and will skip life cycle methods such as shouldComponentUpdate
+
+        //this.sessionName = "The session is on react and state and its virtual dom coupling!!!"
+        console.log(this.state.userName)//not updated immediately as - the change is done via callback and as soon as callback 
+        // returns value the log line is passed already executed
+
+        //alert("User Name is updated!!")
+
         evt.preventDefault();
     }
 
-    //update life cycle method
-    shouldComponentUpdate(nextProps, nextState){
-        console.log(nextState)
-        if(this.state.userName == nextState.userName){
-            return false; //render method is not called if value is not updated
-        } else {
-            return true
-        }
-    }
 
-    render(){     
+    render(){
+        
         console.log("Render method is called!!")
         return( //vitual dom or jsx code (javascript like xml structure)
-            <Router>
+            <Router>                
                 <div className="topdiv">
                     <Header />
                         <Routes>
                             <Route path="/" element={<Home user={this.state.user} />}/>
-                            <Route path="home" element={<Home />}/>
+                            <Route path="home" element={<Home user={this.state.user} />}/>
+                            <Route path="comp" element={<ComponentTypes />}/>
                             <Route path="about" element={<About />}/>
-                            <Route path="about/:id" element={<About />}/>
-                            <Route path="about/:id/:name" element={<About />}/>
+                            {/* <Route path="about/:id" element={<About />}/> */}
+                            {/* <Route path="about/:id/:name" element={<About />}/> */}
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     <Footer sessionName={this.sessionName}/>

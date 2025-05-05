@@ -24,6 +24,8 @@ router.get('/queryString', (req, res) => {
        course: req.query["Course"],
        message : "Query String api of student"
     })
+    //we can also get the info like below
+    // const userinfo 
 })
 
 //4. Sending file as response
