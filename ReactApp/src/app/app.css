@@ -383,7 +383,7 @@ optgroup {
   background: url('./images/hm_pic4.jpg') right no-repeat;
   background-repeat: no-repeat;
   background-position: right;
-  height: 450px;
+  min-height: 350px;
   width: auto;
   background-color: #046dc9;
   padding: 5px;  

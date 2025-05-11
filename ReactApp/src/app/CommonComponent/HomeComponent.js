@@ -1,6 +1,12 @@
 import React, { Component, PureComponent } from "react";
+import {PropTypes} from "prop-types";
 import ComponentTypes from "./ComponentTypes";
+import Footer from "./FooterComponent";
 
+//export default class Home extends Component {
+
+//PureComponent has inbuilt implementation of shouldComponentUpdate to compare and check at least for one state or props change
+//before making a render call
 export default class Home extends PureComponent {
 
     //creation life cycle starts
@@ -14,7 +20,7 @@ export default class Home extends PureComponent {
             userData : props.userData
         }
         this.counter = 100;        
-       // this.intervalObject = null;
+        this.intervalObject = null;
         //this.incrementCounter();
 
         this.userNameRef = React.createRef();//creates a reference pointer so that html can be accessed with this 
@@ -28,10 +34,10 @@ export default class Home extends PureComponent {
     componentDidMount(){
         console.log("componentDidMount" )
 
-        setTimeout(()=>{
-            this.userNameRef.current.value = "Value has been updated"
-            this.userNameRef.current.focus();
-        },2000)
+        // setTimeout(()=>{
+        //     this.userNameRef.current.value = "Value has been updated"
+        //     this.userNameRef.current.focus();
+        // },2000)
         
     }
 
@@ -59,30 +65,9 @@ export default class Home extends PureComponent {
         evt.preventDefault();
     }
 
-    //update life cycle methods
-    //this life cycle method is directly depends on state changes - setState or forceUpdate within component or by props update by parent component
-    // shouldComponentUpdate(nextProps, nextState){ //it containe props and state which are going to be updated in new virtual dom
-    //     console.log("shouldComponentUpdate is called after every state update and receives updated state and props")
-    //     console.log("nextProps ",nextProps)
-    //     console.log("nextState ",nextState)
-    //     if (nextState.userAddress == this.state.userAddress) {
-    //         return false //set to false will skip the call to render method
-    //     } else {
-    //         return true //set to true will call the render method
-    //     }
-    // }
-
-
     //update life cycle methods called after render
     getSnapshotBeforeUpdate(prevState, prevProps){
         console.log("getSnapshotBeforeUpdate");
-        // console.log("prevState", prevState);
-        // console.log("prevProps", prevProps);
-
-        // this.prevUser = prevState.user;
-        // this.setState({
-        //     user : this.prevUser
-        // })
 
         return {
             prevState,
@@ -108,6 +93,7 @@ export default class Home extends PureComponent {
         //clearInterval(this.intervalObject);
     }
 
+    //defining the event handler to be executed by child component
     eventToBeCalledFromChild = (userAge) => {
         this.setState({
             userAge
@@ -118,22 +104,22 @@ export default class Home extends PureComponent {
     render(){
         console.log("Home Render!!!")
         return(
-            <>
-                <h1>Home Component</h1>  
-
-                <input type="text" value={this.state.userName} ref={this.userNameRef} />
-
-                <label>{this.state.userAge}</label>
-                
-                <hr />
-                <label>{this.state.userAddress}</label>
-                {/* binding event to a button in react component */}
-                <button onClick={this.changeUserAddressEvent}>Change User Address</button>
-                
-                {/* data from Child component ComponentTypes, the data is passed as function paramter*/}
-                <ComponentTypes userAge={this.state.userAge} 
-                        passToParent={this.eventToBeCalledFromChild}/>
-            </>
+            <div className={"loadimage form"} style={{border:"1px solid red"}}>
+                <h1>{this.state.title}</h1>
+                <b className="feature">{"Product Feature's :"}</b>
+                <ul>                     
+                    <li>Sign up new users</li>
+                    <li>Login existing users.</li>                
+                    <li>Allow user's to add to cart.</li>
+                    <li>Save the user's cart.</li>
+                    <li>Checkout and pay for items.</li>
+                    <li>Allow users to cancel the order.</li>
+                    <li>Allow users to reorder the cart.</li>
+                    <li>Add products/items to create product collection.</li>
+                    <li>Allow users to give ratings to each product.</li>
+                    <li>Have notifications on top right with logout.</li>
+                </ul>
+            </div>
         )
     }
 }
