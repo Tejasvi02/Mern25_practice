@@ -1,9 +1,10 @@
-import React from "react"
+import React from "react"; // this is responsible to parse the JSX code
 import { NavLink, useNavigate } from "react-router-dom";
 import { connect } from "react-redux"; //helps to connect react component with redux store
 
 let Header = (props)=>{
     let user = props.user; //reading from mapStateToProps which reads from userReducer.user
+    
     console.log(user)
     
     const usrName = user && user.userName ? user.userName : "";
@@ -17,7 +18,7 @@ let Header = (props)=>{
     return(
         <>
             {usrName !=""?
-            <h2>Hi {usrName} , Welcome to Shopping Cart sponsored by Tech Team SIT</h2>:
+            <h2>Hi {usrName}, {user.mobile} , Welcome to Shopping Cart sponsored by Tech Team SIT</h2>:
             <h2>Welcome to Shopping Cart sponsored by Tech Team SIT,
                 <div><h3>Please click on login button to proceed to login.</h3></div>
             </h2>
@@ -25,6 +26,7 @@ let Header = (props)=>{
             <div>
                 <NavLink to="/home"  className="button" activeclassname="true"> Home </NavLink>
                 <NavLink to="/user"  className="button" activeclassname="true"> Login </NavLink>
+                <NavLink to="/userhook"  className="button" activeclassname="true"> Login Hook </NavLink>
                 <NavLink to="/about"  className="button" activeclassname="true"> About </NavLink>
 
                 {/* <NavLink to="/comp"  className="button" activeclassname="true"> Controlled/UnControlled </NavLink> */}
@@ -40,7 +42,7 @@ let Header = (props)=>{
 //subscribing from store - mapStateToProps - allows to access the store data in react component as props
 let mapStateToProps = (store)=>{
     return{
-        user : store.useReducer.user //this is accessing user data from user reducer and will be used in component as props
+        user : store.userReducer.user //this is accessing user data from user reducer and will be used in component as props
     }
 }
 

@@ -6,7 +6,9 @@ import Header from "./CommonComponent/HeaderComponent";
 import Home from "./CommonComponent/HomeComponent";
 import NotFound from "./CommonComponent/NotFoundComponent";
 import About from "./CommonComponent/AboutComponent.js";
-import UserComponent from "./ApplicationComponent/User/UserComponent.js";
+//import UserComponent from "./ApplicationComponent/User/UserComponent.jsx";
+import UserComponent from "./ApplicationComponent/User/UserContainer.js";
+import UserHookComponent from "./ApplicationComponent/User/UserHooksComponent.js"
 
 export default class ApplicationComponent extends Component {
 
@@ -45,6 +47,7 @@ export default class ApplicationComponent extends Component {
                             <Route path="/" element={<Home user={this.state.user} />}/>
                             <Route path="home" element={<Home user={this.state.user} />}/>
                             <Route path="user" element={<UserComponent />}/>
+                            <Route path="userhook" element={<UserHookComponent />}/>
                             <Route path="about" element={<About />}/>
                             <Route path="*" element={<NotFound />} />
                         </Routes>

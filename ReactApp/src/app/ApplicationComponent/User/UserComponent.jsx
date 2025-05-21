@@ -5,8 +5,8 @@
 // creating and updating the ref element (useRef)
 
 import React, { useState, useRef } from "react";
-import { connect } from "react-redux"; //helps to connect react component with redux store
-import { AddUserToStore } from "../../State/User/UserAction";
+//import { connect } from "react-redux"; //helps to connect react component with redux store
+//import { AddUserToStore } from "../../State/User/UserAction";
 
 let UserComponent = (props)=>{
 
@@ -16,6 +16,9 @@ let UserComponent = (props)=>{
     //     this.state = {}
     // }
     //this.state.userName = "new name"
+
+    console.log("Useromponent")
+    //this allows us to access the state from store as we do with mapStateToProps
 
     //useState - hook implements an object to create the state and a callback to udpate the state
     let [userName, updateUserName] = useState(props.user.userName)
@@ -99,21 +102,23 @@ let UserComponent = (props)=>{
     )
 }
 
-//subscribing from store - mapStateToProps - allows to access the store data in react component as props
-let mapStateToProps = (store)=>{
-    return{
-        user : store.useReducer.user //this is accessing user data from user reducer and will be used in component as props
-    }
-}
+export default UserComponent;
 
-//publishing to store
-let mapDispatchToProps = (dispatch)=>{
-    return{
-        addUser : (userData)=>{
-            dispatch(AddUserToStore(userData))//dispatcher works as a pipline to take the action to store
-        }
-    }
-};
+// //subscribing from store - mapStateToProps - allows to access the store data in react component as props
+// let mapStateToProps = (store)=>{
+//     return{
+//         user : store.userReducer.user //this is accessing user data from user reducer and will be used in component as props
+//     }
+// }
+
+// //publishing to store
+// let mapDispatchToProps = (dispatch)=>{
+//     return{
+//         addUser : (userData)=>{
+//             dispatch(AddUserToStore(userData))//dispatcher works as a pipline to take the action to store
+//         }
+//     }
+// };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserComponent);
+// export default connect(mapStateToProps, mapDispatchToProps)(UserComponent);
