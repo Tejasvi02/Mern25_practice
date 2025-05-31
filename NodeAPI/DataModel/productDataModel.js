@@ -9,7 +9,9 @@ let productSchema = new schemaObj({
     desc: {type:String, required : true},
     rating: String,
     price: Number,
-    qty: {type: Number, default:1}
+    qty: {type: Number, default:1},
+    category: { type: String, required: true }
+
 },
 {
     versionKey: false //false - set to false then it wont create in mongodb, don't set it to true, if you want _v just dont add this
