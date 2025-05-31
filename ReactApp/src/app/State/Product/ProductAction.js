@@ -25,12 +25,15 @@ export const saveProduct = (product)=>{
     }
 };
 
-export const addProduct = (products)=>{
+export const addProduct = (products) => {
+    let productArray = Array.isArray(products) ? products : [products];
+
     return {
         type : actionTypes.ADD_PRODUCTS_TOSTORE,
-        payload : {products}
+        payload : { products: productArray }
     }
-}
+};
+
 
 export const fetchProducts = ()=>{
     console.log("Product ");
