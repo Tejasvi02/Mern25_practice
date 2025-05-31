@@ -5,10 +5,11 @@ import Footer from "./CommonComponent/FooterComponent";
 import Header from "./CommonComponent/HeaderComponent";
 import Home from "./CommonComponent/HomeComponent";
 import NotFound from "./CommonComponent/NotFoundComponent";
-import About from "./CommonComponent/AboutComponent.js";
+import About from "./CommonComponent/AboutComponent.jsx";
 //import UserComponent from "./ApplicationComponent/User/UserComponent.jsx";
-import UserComponent from "./ApplicationComponent/User/UserContainer.js";
+//import UserComponent from "./ApplicationComponent/User/UserContainer.js";
 import UserHookComponent from "./ApplicationComponent/User/UserHooksComponent.js"
+import ProductComponent from "./ApplicationComponent/Product/ProductComponent.js";
 
 export default class ApplicationComponent extends Component {
 
@@ -46,8 +47,9 @@ export default class ApplicationComponent extends Component {
                         <Routes>
                             <Route path="/" element={<Home user={this.state.user} />}/>
                             <Route path="home" element={<Home user={this.state.user} />}/>
-                            <Route path="user" element={<UserComponent />}/>
+                           {/* <Route path="user" element={<UserComponent />}/> */}
                             <Route path="userhook" element={<UserHookComponent />}/>
+                            <Route path="product" element={<ProductComponent />}/>
                             <Route path="about" element={<About />}/>
                             <Route path="*" element={<NotFound />} />
                         </Routes>

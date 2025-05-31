@@ -5,10 +5,10 @@ import * as actionTypes from "../ActionTypes"
 
 let initialState = {
     user : {
-        userName : "Default",
+        userName : "",
         password : "",
         street : "",
-        mobile : 0
+        mobile : ""
     }
 }
 

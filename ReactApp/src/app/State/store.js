@@ -3,11 +3,13 @@
 import { combineReducers } from "redux";
 import { configureStore } from '@reduxjs/toolkit';
 
-import useReducer from "./User/UserReducer";
-
+import userReducer from "./User/UserReducer";
+import productReducer from "./Product/ProductReducer";
 
 let rootReducer = combineReducers({
-    useReducer //useReducer : useReducer
+    //useReducer : userReducer - if we have imported another name for userReducer as useReducer this will work
+    userReducer,
+    productReducer
 })
 
 

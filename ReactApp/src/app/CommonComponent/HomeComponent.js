@@ -1,5 +1,5 @@
 import React, { Component, PureComponent } from "react";
-import {PropTypes} from "prop-types";
+import PropTypes from "prop-types";
 import ComponentTypes from "./ComponentTypes";
 import Footer from "./FooterComponent";
 
@@ -122,4 +122,10 @@ export default class Home extends PureComponent {
             </div>
         )
     }
+}
+Home.propTypes = {
+    userName : PropTypes.string.isRequired,
+    user : PropTypes.object.isRequired,
+    // userAge : PropTypes.number.isRequired,
+    // userData : PropTypes.string.isRequired
 }

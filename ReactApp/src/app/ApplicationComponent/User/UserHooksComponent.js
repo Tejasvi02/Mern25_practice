@@ -5,8 +5,8 @@
 // creating and updating the ref element (useRef)
 
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux"; //
-//import { AddUserToStore } from "../../State/User/UserAction";
+import { useDispatch, useSelector } from "react-redux"; //
+import { SaveUserToDB, SaveUserToDBUsingFetch } from "../../State/User/UserAction";
 
 let UserHookComponent = (props)=>{
 
@@ -16,11 +16,6 @@ let UserHookComponent = (props)=>{
     console.log("UserHookComponent", userState)
 
     //useRef - this is reference hook from react library to help us create html element using ref keyword
-    // let userName = useRef(userState.userName)
-    // let password = useRef(userState.password)
-    // let street = useRef(userState.street)
-    // let mobile = useRef(userState.mobile)
-
     let userName = useRef(null)
     let password = useRef(null)
     let street = useRef(null)
@@ -35,21 +30,25 @@ let UserHookComponent = (props)=>{
         mobile.current.value = userState.mobile
     },[])
 
-    
-    let submitForm = (evt)=>{
-        debugger
-        // let user = {
-        //     userName, street
-        // } 
-        //this is the call to dispatcher using action creater
-        // props.addUser({
-        //     userName,
-        //     password, 
-        //     street, 
-        //     mobile
-        // })
+    //we can dispatch the action to store by using useDipatch hook which implements mapDispatchToProps
 
-        alert("User send to signin via reducer")
+    const dispatchUser = useDispatch();
+
+    let submitForm = (evt)=>{
+        //this is the call to dispatcher using action creater
+        //debugger;
+        let userObj = {
+            userName: userName.current.value,
+            password: password.current.value,
+            street: street.current.value,
+            mobile: mobile.current.value
+        }
+
+        //dispatchUser(SaveUserToDB(userObj))
+
+        dispatchUser(SaveUserToDBUsingFetch(userObj))
+
+        //alert("User send to api via ajax call")
 
         evt.preventDefault();
     }
@@ -63,7 +62,7 @@ let UserHookComponent = (props)=>{
                         ref={userName} maxLength={20} required></input>
 
                     <b>User Password</b>
-                    <input type="text" className="form-control" placeholder={"Please type User Password"} 
+                    <input type="password" className="form-control" placeholder={"Please type User Password"} 
                         ref={password} maxLength={20} required></input>
     
 
