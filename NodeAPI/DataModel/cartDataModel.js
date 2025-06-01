@@ -1,23 +1,24 @@
 let mongooseObj = require("mongoose");
-schemaObj = mongooseObj.Schema;
+const Schema = mongooseObj.Schema;
 
-// Connect to same DB
-mongooseObj.connect("mongodb://127.0.0.1/data25");
-
-let cartSchema = new schemaObj({
-    cartItems: [{
-        name: String,
-        desc: String,
-        rating: String,
-        price: Number,
-        qty: Number,
-       // category: String
-    }],
-    createdAt: { type: Date, default: Date.now }
-}, {
-    versionKey: false
+// Connect to MongoDB
+mongooseObj.connect("mongodb://127.0.0.1/data25", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
 
-let CartModel = mongooseObj.model("cart", cartSchema); // Collection: carts
+// Define a flat schema for each cart item (similar to product)
+const cartSchema = new Schema({
+  name: { type: String, required: true },
+  desc: { type: String, required: true },
+  rating: String,
+  price: { type: Number, required: true },
+  qty: { type: Number, default: 1 },
+  createdAt: { type: Date, default: Date.now }
+}, {
+  versionKey: false // Disables __v field
+});
 
+// Export the Cart model (MongoDB collection will be "carts")
+const CartModel = mongooseObj.model("cart", cartSchema);
 module.exports = CartModel;

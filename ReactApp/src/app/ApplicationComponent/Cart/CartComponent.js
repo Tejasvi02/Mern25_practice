@@ -16,7 +16,6 @@ const CartComponent = () => {
   };
 
   const handleCheckout = () => {
-    // Pass cartItems array directly, don't wrap in object here
     dispatch(saveCartToDB(cartItems));
   };
 

@@ -9,31 +9,6 @@ cartRouter.get("/test", (req, res) => {
   res.send("Cart route test success");
 });
 
-// Save Cart Items
-// cartRouter.post("/api/saveCart", (req, res) => {
-//     let cartObj = req.body;
-//     console.log("✅ /api/saveCart called with:", req.body);
-//     console.log("Received Cart:", cartObj);
-
-//     let cartSchemaObj = new CartModel(cartObj);
-
-//     cartSchemaObj.save()
-//         .then((savedCart) => {
-//             console.log("Cart saved:", savedCart);
-//             CartModel.find()
-//                 .then((allCarts) => {
-//                     res.send(allCarts); // Return all carts after saving
-//                 })
-//                 .catch((err) => {
-//                     console.log("Error fetching carts:", err);
-//                     res.status(500).send("Error fetching carts");
-//                 });
-//         })
-//         .catch((err) => {
-//             console.log("Error saving cart:", err);
-//             res.status(500).send("Error saving cart");
-//         });
-// });
 cartRouter.post("/api/saveCart", async (req, res) => {
     try {
         const cartObj = req.body;

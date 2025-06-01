@@ -16,12 +16,14 @@ export const clearCart = () => ({
 });
 
 export const saveCartToDB = (cartItems) => {
-  return async (dispatch) => {
-    try {
-      await axios.post("http://localhost:9000/cart/api/saveCart", { cartItems });
-      dispatch(clearCart());
-    } catch (error) {
-      console.error("Error saving cart:", error);
-    }
+  return (dispatch) => {
+    axios.post("http://localhost:9000/cart/api/save", cartItems) 
+      .then(response => {
+        console.log("Cart saved successfully:", response.data);
+        dispatch({ type: actionTypes.CLEAR_CART });
+      })
+      .catch(error => {
+        console.error("Error saving cart:", error);
+      });
   };
 };

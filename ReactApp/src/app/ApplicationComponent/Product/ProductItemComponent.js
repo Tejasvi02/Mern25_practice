@@ -9,7 +9,6 @@ let ProductItemComponent = ({product})=>{
       const dispatch = useDispatch();
 
 let addItemToCartClick = (evt) => {
-  // Create the cart item object with required properties
   let itemToAdd = {
     _id: product._id,
     name: product.name,
@@ -19,10 +18,7 @@ let addItemToCartClick = (evt) => {
     qty: 1 // or get from input if needed
   };
 
-  // Optional alert or console.log for debugging
   alert("Adding to cart: " + JSON.stringify(itemToAdd));
-
-  // Dispatch the action with that item
   dispatch(addToCart(itemToAdd));
 
   evt.preventDefault();
