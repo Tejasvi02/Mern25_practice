@@ -11,7 +11,7 @@ let cartSchema = new schemaObj({
         rating: String,
         price: Number,
         qty: Number,
-        category: String
+       // category: String
     }],
     createdAt: { type: Date, default: Date.now }
 }, {

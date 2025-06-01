@@ -14,7 +14,7 @@ const userApp = express();
 const productRoute = require("./route/productRoute")
 const productApp = express();
 
-const cartRoute = require('./route/cartRoute');
+const cartRoute = require("./route/cartRoute");
 const cartApp = express();
 
 //calling the cors instance 
@@ -41,7 +41,7 @@ userApp.use("/",userRoute)
 app.use("/product", productApp) 
 productApp.use("/",productRoute)
 
-app.use("/product", cartApp) 
+app.use("/cart", cartApp) 
 cartApp.use("/",cartRoute)
 
 //app mounting

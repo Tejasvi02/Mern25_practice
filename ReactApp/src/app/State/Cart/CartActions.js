@@ -18,7 +18,7 @@ export const clearCart = () => ({
 export const saveCartToDB = (cartItems) => {
   return async (dispatch) => {
     try {
-      await axios.post("http://localhost:9000/cart/api/saveCart", { items: cartItems });
+      await axios.post("http://localhost:9000/cart/api/saveCart", { cartItems });
       dispatch(clearCart());
     } catch (error) {
       console.error("Error saving cart:", error);

@@ -8,9 +8,25 @@ let ProductItemComponent = ({product})=>{
 
       const dispatch = useDispatch();
 
-  const addItemToCart = () => {
-    dispatch(addToCart(product));
+let addItemToCartClick = (evt) => {
+  // Create the cart item object with required properties
+  let itemToAdd = {
+    _id: product._id,
+    name: product.name,
+    desc: product.desc,
+    price: product.price,
+    rating: product.rating,
+    qty: 1 // or get from input if needed
   };
+
+  // Optional alert or console.log for debugging
+  alert("Adding to cart: " + JSON.stringify(itemToAdd));
+
+  // Dispatch the action with that item
+  dispatch(addToCart(itemToAdd));
+
+  evt.preventDefault();
+};
 
     //let dispatchToAddProduct = useDispatch();
 
@@ -27,7 +43,7 @@ let ProductItemComponent = ({product})=>{
             <li>{product.price}</li>
             <li>{product.desc}</li>
             <li>{product.rating}</li>
-            <button onClick={addItemToCart}>Add Item</button>
+            <button onClick={addItemToCartClick}>Add Item</button>
           </ul>
         )}
       </li>
