@@ -11,6 +11,7 @@ import About from "./CommonComponent/AboutComponent.jsx";
 import UserHookComponent from "./ApplicationComponent/User/UserHooksComponent.js"
 import ProductComponent from "./ApplicationComponent/Product/ProductComponent.js";
 import CartComponent from "./ApplicationComponent/Cart/CartComponent";
+import CheckoutComponent from "./ApplicationComponent/Cart/CheckoutComponent.js";
 
 export default class ApplicationComponent extends Component {
 
@@ -52,6 +53,7 @@ export default class ApplicationComponent extends Component {
                             <Route path="userhook" element={<UserHookComponent />}/>
                             <Route path="product" element={<ProductComponent />}/>
                             <Route path="cart" element={<CartComponent />} />
+                            <Route path="checkout" element={<CheckoutComponent />} />
                             <Route path="about" element={<About />}/>
                             <Route path="*" element={<NotFound />} />
                         </Routes>
