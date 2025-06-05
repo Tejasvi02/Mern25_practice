@@ -1,51 +1,100 @@
-import React from "react";
+//this component will be used as cart root and have other child components like cartitem and cartsummary
+
+import React, { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart, saveCartToDB } from "../../State/Cart/CartActions";
+import CartItemComponent from "./CartItemComponent";
+import CartSummary from "./CartSummary";
+import { saveCartForCheckout } from "../../State/Cart/CartAction";
 import { useNavigate } from "react-router-dom";
 
+let CartComponent = (props)=>{
 
-const CartComponent = () => {
+    let user = useSelector((state)=>state.userReducer.user)
+    let cartList = useSelector((state)=>state.cartReducer)
 
-  const navigate = useNavigate();
+    let dispatchTheData = useDispatch();
 
- const cartItems = useSelector((state) => state.cartReducer.items) || [];
-  const dispatch = useDispatch();
+    console.log("cartList", cartList)
+    console.log("user", user._id)
 
-  const handleRemove = (productId) => {
-    dispatch(removeFromCart(productId));
-  };
+    let goToCheckout = useNavigate();
 
-  const handleCheckout = () => {
-    dispatch(saveCartToDB(cartItems));
-  };
+    let clickToSaveCart =(cartList, userid)=>{
+        if (userid) {
+            alert("cart will be saved");
+            dispatchTheData(saveCartForCheckout(cartList, userid))
+        } else {
+            alert("You're not logged-in!! Please login to help you in furture with your selected products!!")
+            //add a function using navigation hook to re-direct to login page
+        }
+    }
 
-  const goToCheckout = () => {
-  navigate("/checkout");
-};
+    let calculateSummaryData = (cartItems)=>{
+        let amount = 0, 
+            count = 0;
+    
+        for(let item of cartItems) {
+            amount += parseInt(item.qty) * parseInt(item.price);
+            count  += parseInt(item.qty); 
+        }
+    
+        return {
+            amount, //ES6 syntactic sugar amount: amount //oject destructuring
+            count // if key and values are same name then we can put it this way without ":"
+        }
+    }
 
-  return (
-    <div>
-      <h2>Cart</h2>
-      {cartItems.length === 0 ? (
-        <p>No items in cart.</p>
-      ) : (
-        <ul>
-          {cartItems.map((item) => (
-            <li key={item._id}>
-              {item.name} - {item.qty} x ${item.price}
-              <button onClick={() => handleRemove(item._id)}>Remove</button>
-            </li>
-          ))}
-        </ul>
-      )}
-      {cartItems.length > 0 && (
-  <>
-    <button onClick={handleCheckout}>Save to Checkout</button>
-    <button onClick={goToCheckout}>Go to Checkout</button>
-  </>
-)}
-    </div>
-  );
-};
+    return(
+        <div className="col-md-12">
+            <h2>Cart Component</h2>
+
+            { cartList && cartList.length > 0 ? 
+              <>
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Price</th>
+                          <th>Description</th>
+                          <th>Rating</th>
+                          <th>Quantity</th>
+                          <th>Total</th>
+                          {
+                              props.readOnly ?  "" : //bydefault false as boolean default is false
+                                  <>
+                                      <th>Remove</th>
+                                      <th>Edit</th>
+                                  </>
+                          }
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {
+                        cartList.map((item)=>{
+                                return <CartItemComponent item={item} key={item._id} readOnly={props.readOnly}/>
+                        })
+                    }
+                </tbody>
+            </table>
+                    <CartSummary data={calculateSummaryData(cartList)} readOnly={props.readOnly} />
+
+                    {
+                        props.readOnly ? <></> : 
+                            <>
+                                <button onClick={() => clickToSaveCart(cartList, user._id)} >
+                                            Save Cart
+                                    </button>
+                                <button onClick={()=>{goToCheckout("/checkout")}} >
+                                    Go To Checkout
+                                </button> 
+                            </> 
+                    }
+                </> 
+            :
+            <h4>Please go to product and add item to cart!!!</h4>
+            }
+        </div>
+    )
+}
 
 export default CartComponent;

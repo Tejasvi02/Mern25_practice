@@ -11,7 +11,8 @@ import About from "./CommonComponent/AboutComponent.jsx";
 import UserHookComponent from "./ApplicationComponent/User/UserHooksComponent.js"
 import ProductComponent from "./ApplicationComponent/Product/ProductComponent.js";
 import CartComponent from "./ApplicationComponent/Cart/CartComponent";
-import CheckoutComponent from "./ApplicationComponent/Cart/CheckoutComponent.js";
+import Checkout from "./ApplicationComponent/Checkout/CheckoutComponent.js";
+import Hooks from "./Hooks/UnderstandingHooks.js";
 
 export default class ApplicationComponent extends Component {
 
@@ -35,6 +36,7 @@ export default class ApplicationComponent extends Component {
             userName : userName
         })
         console.log(this.state.userName)
+
         evt.preventDefault();
     }
 
@@ -49,12 +51,12 @@ export default class ApplicationComponent extends Component {
                         <Routes>
                             <Route path="/" element={<Home user={this.state.user} />}/>
                             <Route path="home" element={<Home user={this.state.user} />}/>
-                           {/* <Route path="user" element={<UserComponent />}/> */}
                             <Route path="userhook" element={<UserHookComponent />}/>
                             <Route path="product" element={<ProductComponent />}/>
-                            <Route path="cart" element={<CartComponent />} />
-                            <Route path="checkout" element={<CheckoutComponent />} />
+                            <Route path="checkout" element={<Checkout />}/>
+                            <Route path="cart" element={<CartComponent />}/>
                             <Route path="about" element={<About />}/>
+                            <Route path="hook" element={<Hooks />}/>
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     <Footer sessionName={this.sessionName}/>

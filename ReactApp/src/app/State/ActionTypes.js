@@ -1,9 +1,11 @@
 //this is the container of all action types to be used in our applications - readucer switch case and actions action types
 
-export const AddUserToStore = "USER.ADDUSERTOSTORE";
-//product
+export const AddUserToStore = "USER.ADDUSERTOSTORE";//
 export const ADD_PRODUCTS_TOSTORE = "STORE.ADDPRODUCT";
-// cart
-export const ADD_TO_CART = "CART.ADD_TO_CART";
-export const REMOVE_FROM_CART = "CART.REMOVE_FROM_CART";
-export const CLEAR_CART = "CART.CLEAR_CART";
+
+
+//For Cart //action types for cart operations
+export const ADD_ITEM = "CART.ADD_ITEM";
+export const REMOVE_ITEM = "CART.REMOVE_ITEM";
+export const UPDATE_ITEM = "CART.UPDATE_ITEM";
+export const EMPTY_CART = "CART.EMPTY_CART";

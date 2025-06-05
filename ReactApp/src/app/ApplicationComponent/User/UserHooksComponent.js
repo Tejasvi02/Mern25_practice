@@ -63,16 +63,16 @@ let UserHookComponent = (props)=>{
 
                     <b>User Password</b>
                     <input type="password" className="form-control" placeholder={"Please type User Password"} 
-                        ref={password} maxLength={20} required></input>
+                        ref={password} maxLength={20} ></input>
     
 
                     <b>User Address</b>
                     <input type="text" className="form-control" placeholder={"Please type User Address"} 
-                        ref={street} maxLength={40} required></input>
+                        ref={street} maxLength={40} ></input>
 
                     <b>User Mobile</b>
                     <input type="number" className="form-control" placeholder={"Please type User Mobile"} 
-                        ref={mobile} maxLength={20} required></input>
+                        ref={mobile} maxLength={20} ></input>
 
 
                     <button type="submit"> Login User </button>

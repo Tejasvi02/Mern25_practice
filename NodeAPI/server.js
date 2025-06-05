@@ -28,7 +28,7 @@ app.use(cors())//using cors middleware to allow resource sharing with different 
 
 //setting up the middleware static to handle all the static files we need to serve to client
 // serve static files like images css using static middleware 
-app.use('/static',express.static('public'))
+app.use('/static', express.static('public'))
 
 //json middle-ware for setting request content type to json in body
 app.use(express.json({limit:'2mb', extended:false})); 

@@ -1,50 +1,33 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../State/Cart/CartActions";
+import { AddItemToCart } from "../../State/Cart/CartAction";
 
 let ProductItemComponent = ({product})=>{
 
     let [showHide, toggleShowHide] = useState(false)
 
-      const dispatch = useDispatch();
+    let dispatchToAddProduct = useDispatch();
 
-let addItemToCartClick = (evt) => {
-  let itemToAdd = {
-    _id: product._id,
-    name: product.name,
-    desc: product.desc,
-    price: product.price,
-    rating: product.rating,
-    qty: 1 // or get from input if needed
-  };
+    let addItemToCart = (product)=>{
+        dispatchToAddProduct(AddItemToCart(product))        
+    }
 
-  alert("Adding to cart: " + JSON.stringify(itemToAdd));
-  dispatch(addToCart(itemToAdd));
+    return(
+        <ul className="product col-md-11">
+            <li className="product" onClick={()=>toggleShowHide(!showHide)}>
+           {product.name}
+                {showHide ? 
+                    <ul>
+                    <li>{product.price}</li>
+                    <li>{product.desc}</li>
+                    <li>{product.rating}</li> 
+                    <button onClick={()=>addItemToCart(product)} >Add Item</button>
+                </ul>
+                 : <div></div>} 
+            </li>
+        </ul>
+    )
 
-  evt.preventDefault();
-};
-
-    //let dispatchToAddProduct = useDispatch();
-
-    // let addItemToCart = (product)=>{
-    //     dispatchToAddProduct(AddItemToCart(product))        
-    // }
-
-  return (
-    <ul className="product col-md-11">
-      <li className="product" onClick={() => toggleShowHide(!showHide)}>
-        {product.name}
-        {showHide && (
-          <ul>
-            <li>{product.price}</li>
-            <li>{product.desc}</li>
-            <li>{product.rating}</li>
-            <button onClick={addItemToCartClick}>Add Item</button>
-          </ul>
-        )}
-      </li>
-    </ul>
-  )
 }
 
 export default ProductItemComponent;

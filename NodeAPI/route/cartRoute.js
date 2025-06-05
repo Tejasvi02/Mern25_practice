@@ -1,48 +1,48 @@
-console.log("cartRoute.js loaded");
-const express = require('express');
-//const cartRouter = express.Router({ strict: true, caseSensitive: true });
-const cartRouter = express.Router(); 
-const CartModel = require('../DataModel/cartDataModel');
+let express = require("express");
+let router = express.Router({}),
+CartDataModel = require("../DataModel/cartDataModel");
 
-cartRouter.get("/test", (req, res) => {
-  console.log("Test route hit");
-  res.send("Cart route test success");
+//cart api's
+router.post("/api/saveUserCart",(req, res)=>{
+
+    CartDataModel.findOne({userid: req.body.userid})
+        .then((cartDbObj) => {        
+                if (!cartDbObj) { //checks for null cart of given user
+                        console.log("No cartitems Present, Adding / Inserting!"); 
+                        let cartObj = new CartDataModel(req.body);
+
+                        cartObj.save().then((data)=>{                                  
+                            res.json(data);
+                        }).catch((err)=>{
+                            res.send("Error Occurred"+ err);
+                        });
+                }
+                else{ //update the cart for given user
+                    console.log("CartItems Present, Replacing / Updating!");
+                    cartDbObj.cart = req.body.cart;//replacing db cart with cart that user has sent from cartcomponent page
+                    
+                    cartDbObj.save()
+                    .then((data)=>{        
+                        // setTimeout(()=>{
+                            res.json(data);
+                        //},10000)                        
+                    })
+                    .catch((err)=>{
+                        res.send("Error Occurred"+ err);
+                    })
+                }
+  })
+  .catch((err)=>{
+        console.log("got an error!", err);            
+        res.send("error while fetching cart!");
+  });
+
 });
 
-cartRouter.post("/api/saveCart", async (req, res) => {
-    try {
-        const cartObj = req.body;
-        console.log("✅ /api/saveCart called with:", cartObj);
-
-        // Optional: Validate required fields manually if needed
-        if (!cartObj.userId || !cartObj.items || !Array.isArray(cartObj.items)) {
-            return res.status(400).json({ message: "Invalid cart data" });
-        }
-
-        const cartSchemaObj = new CartModel(cartObj);
-        const savedCart = await cartSchemaObj.save();
-
-        console.log("Cart saved:", savedCart);
-
-        const allCarts = await CartModel.find();
-        res.status(201).json(allCarts);
-
-    } catch (err) {
-        console.error("Error saving cart:", err);
-        res.status(500).json({ message: "Error saving cart", error: err.message });
-    }
-})
-
-// Get All Carts
-cartRouter.get("/api/getCart", (req, res) => {
-    CartModel.find()
-        .then((carts) => {
-            res.send(carts);
-        })
-        .catch((err) => {
-            console.log("Error fetching carts:", err);
-            res.status(500).send("Error fetching carts");
-        });
+router.post("/api/getUserCart",(req, res)=>{
+    CartDataModel.findOne({userid: req.body.userid})
+        .then((cart) => { res.json(cart) })
+        .catch((err)=>{res.send("Error Occurred"+ err);})
 });
 
-module.exports = cartRouter;
+module.exports = router;
