@@ -12,6 +12,7 @@ import UserHookComponent from "./ApplicationComponent/User/UserHooksComponent.js
 import ProductComponent from "./ApplicationComponent/Product/ProductComponent.js";
 import CartComponent from "./ApplicationComponent/Cart/CartComponent";
 import Checkout from "./ApplicationComponent/Checkout/CheckoutComponent.js";
+import CouponComponent from "./ApplicationComponent/Coupon/CouponComponent"; 
 import Hooks from "./Hooks/UnderstandingHooks.js";
 
 export default class ApplicationComponent extends Component {
@@ -55,6 +56,7 @@ export default class ApplicationComponent extends Component {
                             <Route path="product" element={<ProductComponent />}/>
                             <Route path="checkout" element={<Checkout />}/>
                             <Route path="cart" element={<CartComponent />}/>
+                            <Route path="coupon" element={<CouponComponent />} />
                             <Route path="about" element={<About />}/>
                             <Route path="hook" element={<Hooks />}/>
                             <Route path="*" element={<NotFound />} />
