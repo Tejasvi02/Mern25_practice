@@ -1,17 +1,28 @@
 import React, { Fragment, useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { saveRecentOrder } from "../../State/Order/RecentOrderAction";
+import { EmptyTheCart } from "../../State/Cart/CartAction";
+import { useDispatch } from "react-redux";
+
 
 import Cart from "../Cart/CartComponent";
 
 let Checkout = () => {
     const user = useSelector((state) => state.userReducer.user);
-    const coupon = useSelector((state) => state.couponReducer.coupon); // ✅ Get actual coupon from store
+    const coupon = useSelector((state) => state.couponReducer.coupon); // Get actual coupon from store
+    
+    const dispatch = useDispatch();
+    const cartList = useSelector(state => state.cartReducer);
 
     const [checkout, makePayment] = useState(true);
     const navigate = useNavigate();
 
     const makePaymentClick = () => {
+            // Save order to recent orders
+        dispatch(saveRecentOrder(cartList, user._id));
+        // Empty cart
+        dispatch(EmptyTheCart());   
         makePayment(!checkout);
     };
 

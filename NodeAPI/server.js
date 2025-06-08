@@ -10,12 +10,14 @@ const userApp = express();
 
 //const studentRoute = require("./route/student")
 
-
 const productRoute = require("./route/productRoute")
 const productApp = express();
 
 const cartRoute = require("./route/cartRoute");
 const cartApp = express();
+
+const orderRoute = require("./route/orderRoute");
+const orderApp = express();
 
 //calling the cors instance 
 const cors = require("cors");
@@ -49,7 +51,8 @@ app.use("/",defaultApp)
 defaultApp.use("/",defaultRoute) //redirecting all requests to default route to get served
 
 //app.use("/student",studentRoute)
-
+app.use("/order", orderApp);
+orderApp.use("/", orderRoute);
 
 console.log("rest api is listening at 9000")
 app.listen(9000)

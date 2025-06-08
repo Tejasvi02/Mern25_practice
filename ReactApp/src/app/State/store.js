@@ -7,13 +7,15 @@ import userReducer from "./User/UserReducer";
 import productReducer from "./Product/ProductReducer";
 import cartReducer from "./Cart/CartReducer";
 import couponReducer from "./Coupon/CouponReducer"; 
+import recentOrderReducer from "./Order/RecentOrderReducer";
 
 let rootReducer = combineReducers({
     //useReducer : userReducer - if we have imported another name for userReducer as useReducer this will work
     userReducer,
     productReducer,
     cartReducer,
-    couponReducer  
+    couponReducer,
+    recentOrderReducer
 })
 
 
