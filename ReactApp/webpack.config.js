@@ -21,6 +21,13 @@ config = {
                   loader: 'babel-loader'
                 }
             },
+            // New rule just for node_modules CSS like Bootstrap
+            {
+            test: /\.css$/,
+            include: /node_modules/,
+            use: ['style-loader', 'css-loader']
+            },
+
             {
                 test: /\.css$/,
                 exclude: /node_modules/,

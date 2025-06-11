@@ -4,6 +4,8 @@ import ApplicationComponent from "./app/application"
 import * as ReactDOM from "react-dom/client" //responsible to create virtual dom
 import { Provider } from "react-redux";
 import store from "./app/State/store";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 //creating root of the react application where we can load the react app
 const root = ReactDOM.createRoot(document.getElementById("root"));
