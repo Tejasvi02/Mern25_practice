@@ -2,6 +2,7 @@
 //this uses switch case statement to have multiple actions handling - create, update, delete etc
 //each reducer will further get combined as one entity in store and will be accessed by store object when it subscribes
 import * as actionTypes from "../ActionTypes"
+
 const Initial_State = []
 
 //write callback/ reducer to generate new state upon action change
@@ -27,6 +28,21 @@ let CartReducer = (state = Initial_State, action)=>{
         
         case actionTypes.REMOVE_ITEM :
             return state.filter((item)=>item._id != action.payload.productId)
+
+        case "ADD_ITEM_TO_CART":
+            const item = action.payload;
+            const existingItem = state.find(i => i._id === item._id);
+
+            if (existingItem) {
+                return state.map(i =>
+                    i._id === item._id
+                        ? { ...i, qty: i.qty + item.qty }
+                        : i
+                );
+            } else {
+                return [...state, item];
+            }
+
 
         default:
             return state
