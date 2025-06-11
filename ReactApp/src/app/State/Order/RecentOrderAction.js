@@ -20,6 +20,28 @@ export const saveRecentOrder = (order, userid) => {
     };
 };
 
+const handleSubmitReview = (productId) => {
+    if (!selectedOrder || !productId) return;
+
+    axios.post("http://localhost:9000/order/api/review", {
+        orderId: selectedOrder._id,
+        productId,
+        rating,
+        comment,
+    })
+    .then(res => {
+        alert("Review submitted!");
+        setShowModal(false);
+        setRating(0);
+        setComment("");
+    })
+    .catch(err => {
+        alert("Failed to submit review");
+        console.error(err);
+    });
+};
+
+
 export const fetchRecentOrders = (userid) => {
     return dispatch => {
         axios.post("http://localhost:9000/order/api/fetch", { userid })

@@ -1,70 +1,75 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRecentOrders, cancelOrder } from "../../State/Order/RecentOrderAction";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button, Form } from 'react-bootstrap'; //for popup
-import { useState } from 'react';
-
+import { Modal, Button, Form } from 'react-bootstrap';
+import axios from "axios";
 
 const RecentOrders = () => {
     const dispatch = useDispatch();
     const orders = useSelector(state => state.recentOrderReducer);
     const user = useSelector(state => state.userReducer.user);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
-    //popup
     const [showModal, setShowModal] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [selectedProductId, setSelectedProductId] = useState(null);
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
 
-
     useEffect(() => {
-        dispatch(fetchRecentOrders(user._id));
-    }, []);
+        if (user?._id) {
+            dispatch(fetchRecentOrders(user._id));
+        }
+    }, [dispatch, user]);
 
     const handleCancel = (orderId) => {
         dispatch(cancelOrder(orderId));
     };
 
     const isCancelable = (createdAt) => {
-    const orderDate = new Date(createdAt);
-    const now = new Date();
-    const diffInDays = (now - orderDate) / (1000 * 60 * 60 * 24);
-    return diffInDays <= 2;
+        const orderDate = new Date(createdAt);
+        const now = new Date();
+        const diffInDays = (now - orderDate) / (1000 * 60 * 60 * 24);
+        return diffInDays <= 2;
     };
 
     const handleReorder = (orderItems) => {
-    // Merge reorder items into cart
-    orderItems.forEach(item => {
-        dispatch({
-            type: "ADD_ITEM_TO_CART",
-            payload: item
+        orderItems.forEach(item => {
+            dispatch({
+                type: "ADD_ITEM_TO_CART",
+                payload: item
+            });
         });
-    });
-    navigate("/cart");
-};
+        navigate("/cart");
+    };
 
-    const openReviewModal = (order) => {
+    const openReviewModal = (order, productId) => {
         setSelectedOrder(order);
+        setSelectedProductId(productId);
         setShowModal(true);
     };
 
     const handleSubmitReview = () => {
-        // Post review to server here
-        console.log("Submitting review", {
+        if (!selectedOrder || !selectedProductId) return;
+
+        axios.post("http://localhost:9000/order/api/review", {
             orderId: selectedOrder._id,
+            productId: selectedProductId,
             rating,
-            comment
+            comment,
+        })
+        .then(res => {
+            alert("Review submitted!");
+            setShowModal(false);
+            setRating(0);
+            setComment("");
+        })
+        .catch(err => {
+            alert("Failed to submit review");
+            console.error(err);
         });
-
-        // Reset and close
-        setShowModal(false);
-        setRating(0);
-        setComment("");
     };
-
-
 
     return (
         <div>
@@ -76,7 +81,19 @@ const RecentOrders = () => {
                         <p>Date: {new Date(order.createdAt).toLocaleString()}</p>
                         <ul>
                             {order.order.map(item => (
-                                <li key={item._id}>{item.name} x {item.qty}</li>
+                                <li key={item._id}>
+                                    {item.name} x {item.qty}
+
+                                    {order.status === "Delivered" && (
+                                        <Button
+                                            className="ms-2"
+                                            size="sm"
+                                            onClick={() => openReviewModal(order, item._id)}
+                                        >
+                                            Review
+                                        </Button>
+                                    )}
+                                </li>
                             ))}
                         </ul>
 
@@ -94,52 +111,44 @@ const RecentOrders = () => {
                             <p><b>Status: Cancelled</b></p>
                         )}
 
-                        {order.status === "Delivered" && (
-                            <>
-                                <p><b>Status: Delivered</b></p>
-                                <button onClick={() => openReviewModal(order)}>Give Review</button>
-                            </>
-                        )}
-
                         <hr />
                     </div>
                 ))
             }
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
-            <Modal.Header closeButton>
-                <Modal.Title>Review Order</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form>
-                    <Form.Group>
-                        <Form.Label>Rating (1 to 5)</Form.Label>
-                        <Form.Control
-                            type="number"
-                            min={1}
-                            max={5}
-                            value={rating}
-                            onChange={e => setRating(Number(e.target.value))}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mt-3">
-                        <Form.Label>Comment</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            rows={3}
-                            value={comment}
-                            onChange={e => setComment(e.target.value)}
-                        />
-                    </Form.Group>
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
-                <Button variant="primary" onClick={handleSubmitReview}>Submit Review</Button>
-            </Modal.Footer>
-        </Modal>
 
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Review Product</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>Rating (1 to 5)</Form.Label>
+                            <Form.Control
+                                type="number"
+                                min={1}
+                                max={5}
+                                value={rating}
+                                onChange={e => setRating(Number(e.target.value))}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mt-3">
+                            <Form.Label>Comment</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                value={comment}
+                                onChange={e => setComment(e.target.value)}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
+                    <Button variant="primary" onClick={handleSubmitReview}>Submit Review</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
-        
     );
 };
 

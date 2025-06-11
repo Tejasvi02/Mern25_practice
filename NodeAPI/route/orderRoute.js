@@ -64,4 +64,25 @@ router.post("/api/cancel", (req, res) => {
         .catch(err => res.status(500).json({ message: "Error: " + err }));
 });
 
+// Update product review inside an order
+router.post("/api/review", async (req, res) => {
+    const { orderId, productId, rating, comment } = req.body;
+
+    try {
+        const order = await OrderModel.findById(orderId);
+        if (!order) return res.status(404).json({ message: "Order not found" });
+
+        const product = order.order.find(p => p._id === productId);
+        if (!product) return res.status(404).json({ message: "Product not found in order" });
+
+        product.review = { rating, comment };
+
+        await order.save();
+        res.json({ message: "Review saved", order });
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err });
+    }
+});
+
+
 module.exports = router;

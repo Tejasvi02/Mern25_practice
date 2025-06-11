@@ -7,7 +7,7 @@ mongooseObj.connect("mongodb://127.0.0.1/data25");
 let productSchema = new schemaObj({
     name : {type: String, required : true},
     desc: {type:String, required : true},
-    rating: String,
+    //rating: String,
     price: Number,
     qty: {type: Number, default:1},
     //category: { type: String, required: true }
