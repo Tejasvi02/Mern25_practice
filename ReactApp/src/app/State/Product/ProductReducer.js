@@ -4,7 +4,6 @@ const Initial_State = {
     Product : {
         name : "",
         desc : "",
-        rating : "",
         price : ""
     },
     Products : [],

@@ -1,33 +1,48 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { AddItemToCart } from "../../State/Cart/CartAction";
+import axios from "axios";
 
-let ProductItemComponent = ({product})=>{
+const ProductItemComponent = ({ product }) => {
+    const [reviews, setReviews] = useState([]);
+    const [showReviews, setShowReviews] = useState(false);
 
-    let [showHide, toggleShowHide] = useState(false)
+    const fetchReviews = async () => {
+        try {
+            const response = await axios.post("http://localhost:9000/order/api/product-reviews", {
+                productId: product._id
+            });
+            setReviews(response.data);
+            setShowReviews(true);
+        } catch (err) {
+            console.error("Failed to fetch reviews:", err);
+        }
+    };
 
-    let dispatchToAddProduct = useDispatch();
+    return (
+        <div style={{ border: "1px solid #ccc", padding: "10px", margin: "10px" }}>
+            <h3>{product.name}</h3>
+            <p>{product.desc}</p>
+            <p><strong>Price:</strong> ${product.price}</p>
 
-    let addItemToCart = (product)=>{
-        dispatchToAddProduct(AddItemToCart(product))        
-    }
+            <button onClick={fetchReviews}>View Reviews</button>
 
-    return(
-        <ul className="product col-md-11">
-            <li className="product" onClick={()=>toggleShowHide(!showHide)}>
-           {product.name}
-                {showHide ? 
-                    <ul>
-                    <li>{product.price}</li>
-                    <li>{product.desc}</li>
-                    <li>{product.rating}</li> 
-                    <button onClick={()=>addItemToCart(product)} >Add Item</button>
-                </ul>
-                 : <div></div>} 
-            </li>
-        </ul>
-    )
-
-}
+            {showReviews && (
+                <div style={{ marginTop: "10px", padding: "10px", background: "#f9f9f9" }}>
+                    <h4>Reviews:</h4>
+                    {reviews.length > 0 ? (
+                        reviews.map((review, idx) => (
+                            <div key={idx} style={{ marginBottom: "8px" }}>
+                                <strong>Rating:</strong> {review.rating} / 5 <br />
+                                <strong>Comment:</strong> {review.comment} <br />
+                                <small><i>By: {review.user}</i> on {new Date(review.date).toLocaleDateString()}</small>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No reviews yet.</p>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+};
 
 export default ProductItemComponent;

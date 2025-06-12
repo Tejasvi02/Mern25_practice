@@ -23,7 +23,6 @@ useEffect(() => {
         name.current.value = product.name || "";
         price.current.value = product.price || "";
         desc.current.value = product.desc || "";
-        rating.current.value = product.rating || "";
     }
 }, [isAdmin, product]);
 
@@ -34,7 +33,6 @@ useEffect(() => {
             name : name.current.value,
             price : price.current.value,
             desc : desc.current.value,
-            rating : rating.current.value
         }
 
         alert("We are going to save this product!!! "+ JSON.stringify(productToSave))
@@ -68,12 +66,6 @@ useEffect(() => {
                             <b>Description </b>
                         <input type="text" className="form-control col-md-6" ref={desc} 
                             placeholder="Please Describe the product"  />
-                        </div>
-                        
-                        <div className="col-md-12">
-                            <b>Ratings </b>
-                        <input type="text" className="form-control col-md-6" ref={rating} 
-                            placeholder="Ratings" />
                         </div>
 
                         <input type="button" className={"form-control btn btn-primary col-md-3"} 

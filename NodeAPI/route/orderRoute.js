@@ -53,7 +53,6 @@ router.post("/api/cancel", (req, res) => {
                     res.json({ message: "Order cancelled.", order: data })
                 );
             } else {
-                // Optional: Auto-mark as delivered
                 if (order.status === "Pending") {
                     order.status = "Delivered";
                     order.save();
@@ -84,5 +83,32 @@ router.post("/api/review", async (req, res) => {
     }
 });
 
+// ✅ Fetch reviews for a specific product from all orders
+router.post("/api/product-reviews", async (req, res) => {
+    const { productId } = req.body;
+
+    try {
+        const orders = await OrderModel.find({ "order._id": productId });
+
+        const reviews = [];
+
+        orders.forEach(order => {
+            order.order.forEach(item => {
+                if (item._id.toString() === productId && item.review) {
+                    reviews.push({
+                        rating: item.review.rating,
+                        comment: item.review.comment,
+                        user: order.userid,
+                        date: order.createdAt
+                    });
+                }
+            });
+        });
+
+        res.json(reviews);
+    } catch (err) {
+        res.status(500).json({ error: "Error fetching reviews" });
+    }
+});
 
 module.exports = router;
