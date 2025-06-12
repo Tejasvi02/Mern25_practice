@@ -13,7 +13,7 @@ const ProductReviewSchema = new Schema({
 }, { _id: false });
 
 const OrderSchema = new Schema({
-    userid: { type: String, required: true },
+    userid: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
 
     // Array of products in the order, each with optional review
     order: [ProductReviewSchema],

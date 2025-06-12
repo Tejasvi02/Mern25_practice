@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const OrderModel = require("../DataModel/orderDataModel");
+const UserModel = require("../DataModel/userDataModel");
 
 // Save a new order
 router.post("/api/save", (req, res) => {
@@ -83,12 +84,14 @@ router.post("/api/review", async (req, res) => {
     }
 });
 
-// ✅ Fetch reviews for a specific product from all orders
+// Fetch reviews for a specific product from all orders
+
 router.post("/api/product-reviews", async (req, res) => {
     const { productId } = req.body;
 
     try {
-        const orders = await OrderModel.find({ "order._id": productId });
+        // Populate user info
+        const orders = await OrderModel.find({ "order._id": productId }).populate("userid", "userName");
 
         const reviews = [];
 
@@ -98,7 +101,7 @@ router.post("/api/product-reviews", async (req, res) => {
                     reviews.push({
                         rating: item.review.rating,
                         comment: item.review.comment,
-                        user: order.userid,
+                        user: order.userid?.name || "Anonymous", // <- use populated `name` here
                         date: order.createdAt
                     });
                 }
@@ -107,8 +110,10 @@ router.post("/api/product-reviews", async (req, res) => {
 
         res.json(reviews);
     } catch (err) {
+        console.error("Review fetch error:", err);
         res.status(500).json({ error: "Error fetching reviews" });
     }
 });
+
 
 module.exports = router;

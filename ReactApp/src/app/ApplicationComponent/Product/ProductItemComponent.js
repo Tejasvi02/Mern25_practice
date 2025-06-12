@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { AddItemToCart } from "../../State/Cart/CartAction";
 
 const ProductItemComponent = ({ product }) => {
     const [reviews, setReviews] = useState([]);
     const [showReviews, setShowReviews] = useState(false);
+    let [showHide, toggleShowHide] = useState(false)
+
+    let dispatchToAddProduct = useDispatch();
+
+    let addItemToCart = (product)=>{
+        dispatchToAddProduct(AddItemToCart(product));
+        alert(`${product.name} added to cart!`);        
+    }
 
     const fetchReviews = async () => {
         try {
@@ -22,6 +32,7 @@ const ProductItemComponent = ({ product }) => {
             <h3>{product.name}</h3>
             <p>{product.desc}</p>
             <p><strong>Price:</strong> ${product.price}</p>
+            <button onClick={()=>addItemToCart(product)} >Add Item</button>
 
             <button onClick={fetchReviews}>View Reviews</button>
 
