@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const OrderModel = require("../DataModel/orderDataModel");
 const UserModel = require("../DataModel/userDataModel");
+const mongoose = require("mongoose"); 
 
 // Save a new order
 router.post("/api/save", (req, res) => {
@@ -16,9 +17,9 @@ router.post("/api/save", (req, res) => {
     }));
 
     const newOrder = new OrderModel({
-        userid,
+        userid: new mongoose.Types.ObjectId(userid),
         order: structuredOrder,
-        status: "Pending",
+        status: "Pending",  
         createdAt: new Date()
     });
 
@@ -101,7 +102,7 @@ router.post("/api/product-reviews", async (req, res) => {
                     reviews.push({
                         rating: item.review.rating,
                         comment: item.review.comment,
-                        user: order.userid?.name || "Anonymous", // <- use populated `name` here
+                        user: order.userid?.userName || "Anonymous", // <- use populated `name` here
                         date: order.createdAt
                     });
                 }
