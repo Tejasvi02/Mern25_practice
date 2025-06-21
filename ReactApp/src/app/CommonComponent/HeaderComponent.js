@@ -34,7 +34,7 @@ let Header = (props)=>{
                     <NavLink to="/cart" className="button" activeclassname="true"> Cart </NavLink>
                     <NavLink to="/checkout" className="button" activeclassname="true"> Checkout </NavLink>
                     <NavLink to="/recent-orders" className="button" activeclassname="true"> RecentOrders </NavLink>
-                    <NavLink to="/hook" className="button" activeclassname="true"> Hooks </NavLink>
+                    {/*<NavLink to="/hook" className="button" activeclassname="true"> Hooks </NavLink>*/}
                 </>
             )}
         </div>
