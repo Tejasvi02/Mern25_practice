@@ -1,29 +1,40 @@
-import React, { Fragment, useState } from "react";
-import { useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
-import { saveRecentOrder } from "../../State/Order/RecentOrderAction";
-import { EmptyTheCart } from "../../State/Cart/CartAction";
-import { useDispatch } from "react-redux";
-
+import React, { Fragment, useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 import Cart from "../Cart/CartComponent";
+import { saveRecentOrder } from "../../State/Order/RecentOrderAction";
+import { EmptyTheCart } from "../../State/Cart/CartAction";
 
 let Checkout = () => {
     const user = useSelector((state) => state.userReducer.user);
-    const coupon = useSelector((state) => state.couponReducer.coupon); // Get actual coupon from store
-    
-    const dispatch = useDispatch();
-    const cartList = useSelector(state => state.cartReducer);
+    const coupon = useSelector((state) => state.couponReducer.coupon);
+    const cartList = useSelector((state) => state.cartReducer);
 
-    const [checkout, makePayment] = useState(true);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const payNow = new URLSearchParams(location.search).get("pay") === "true";
+
+    const [checkout, setCheckout] = useState(true);
+
+    // Handle auto-payment trigger via query param
+    useEffect(() => {
+        if (payNow) {
+            // Prevent this effect from re-triggering due to Redux state changes
+            dispatch(saveRecentOrder(cartList, user._id));
+            dispatch(EmptyTheCart());
+            setCheckout(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // <-- Run only once on mount
+
 
     const makePaymentClick = () => {
-            // Save order to recent orders
         dispatch(saveRecentOrder(cartList, user._id));
-        // Empty cart
-        dispatch(EmptyTheCart());   
-        makePayment(!checkout);
+        dispatch(EmptyTheCart());
+        setCheckout(false);
     };
 
     const goToCart = (event) => {
@@ -48,7 +59,6 @@ let Checkout = () => {
                         <br />
                         Address: <b>{user.street}</b>
                         <hr />
-                        {/* Coupon Display Logic */}
                         {coupon ? (
                             <p>Coupon applied successfully: <b>{coupon}</b></p>
                         ) : (
@@ -76,7 +86,7 @@ let Checkout = () => {
                     </div>
                     <div>
                         <button onClick={goToCart}>Go Back To Cart</button>
-                        <button onClick={makePaymentClick}>Go To Checkout</button>
+                        <button onClick={() => setCheckout(true)}>Go To Checkout</button>
                     </div>
                 </Fragment>
             }

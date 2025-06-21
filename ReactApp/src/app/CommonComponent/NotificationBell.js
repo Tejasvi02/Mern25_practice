@@ -1,20 +1,25 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const NotificationBell = () => {
-  // Initial notifications (static)
-  const [notifications, setNotifications] = useState([
-    "Add Products from Product Screen",
-    "Add Items from Cart Page",
-    "Review Cart from Checkout Page",
-    "Make Payment from Payment Page",
-    "Assist for Cancel/Reorder",
-  ]);
+const NotificationBell = ({ notifications: initialNotifications }) => {
+  const [notifications, setNotifications] = useState(initialNotifications || []);
+  const navigate = useNavigate();
 
-  // Handle notification click
+  // Map notification messages to routes
+  const routeMap = {
+    "Add Products from Product Screen": "/product",
+    "Add Items from Cart Page": "/cart",
+    "Review Cart from Checkout Page": "/checkout",
+    "Make Payment from Payment Page": "/checkout?pay=true",
+    "Assist for Cancel/Reorder": "/recent-orders",
+  };
+
   const handleNotificationClick = (msg) => {
-    alert(`You clicked notification: ${msg}`); // Just for demo
-    // Remove clicked notification from list (reduce count)
-    setNotifications((prev) => prev.filter((n) => n !== msg));
+    const route = routeMap[msg] || "/"; // fallback to home
+    navigate(route);
+
+    // Optionally remove notification after clicking uncomment below to see
+    //setNotifications((prev) => prev.filter((n) => n !== msg));
   };
 
   return (
@@ -35,13 +40,11 @@ const NotificationBell = () => {
         <ul className="dropdown-menu dropdown-menu-end shadow">
           {notifications.length === 0 ? (
             <li>
-              <span className="dropdown-item text-muted">
-                No new notifications
-              </span>
+              <span className="dropdown-item text-muted">No new notifications</span>
             </li>
           ) : (
-            notifications.map((msg, index) => (
-              <li key={index}>
+            notifications.map((msg, idx) => (
+              <li key={idx}>
                 <button
                   className="dropdown-item"
                   onClick={() => handleNotificationClick(msg)}
