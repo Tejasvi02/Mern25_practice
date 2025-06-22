@@ -13,7 +13,7 @@ const ProductItemComponent = ({ product }) => {
 
     let addItemToCart = (product)=>{
         dispatchToAddProduct(AddItemToCart(product));
-        alert(`${product.name} added to cart!`); 
+        //alert(`${product.name} added to cart!`); 
         toast.success(`${product.name} added to cart 🛒`, {
             position: "top-right"
         });       
