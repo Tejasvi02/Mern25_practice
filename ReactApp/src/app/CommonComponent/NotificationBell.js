@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const NotificationBell = ({ notifications: initialNotifications }) => {
   const [notifications, setNotifications] = useState(initialNotifications || []);
   const navigate = useNavigate();
+
+  
+  useEffect(() => {
+    setNotifications(initialNotifications || []);
+  }, [initialNotifications]);
 
   // Map notification messages to routes
   const routeMap = {

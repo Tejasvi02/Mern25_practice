@@ -3,8 +3,21 @@ import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import NotificationBell from "./NotificationBell";
 
-const Header = ({ user }) => {
+const Header = ({ user, cart }) => {
   const usrName = user && user.userName ? user.userName : "";
+
+  const staticNotifications = [
+    "Add Products from Product Screen",
+    "Add Items from Cart Page",
+    "Review Cart from Checkout Page",
+    "Make Payment from Payment Page",
+    "Assist for Cancel/Reorder",
+  ];
+
+  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+  console.log(totalQty)
+  const allNotifications = [`Items in Cart: ${totalQty}`, ...staticNotifications];
+
 
   return (
     <>
@@ -33,15 +46,7 @@ const Header = ({ user }) => {
             <NavLink to="/checkout" className="button" activeclassname="true"> Checkout </NavLink>
             <NavLink to="/recent-orders" className="button" activeclassname="true"> RecentOrders </NavLink>
 
-            <NotificationBell
-              notifications={[
-                "Add Products from Product Screen",
-                "Add Items from Cart Page",
-                "Review Cart from Checkout Page",
-                "Make Payment from Payment Page",
-                "Assist for Cancel/Reorder",
-              ]}
-            />
+            <NotificationBell notifications={allNotifications} />
           </>
         )}
       </div>
@@ -51,6 +56,7 @@ const Header = ({ user }) => {
 
 const mapStateToProps = (store) => ({
   user: store.userReducer.user,
+  cart: store.cartReducer || [], // ✅ CORRECT
 });
 
 export default connect(mapStateToProps)(Header);
