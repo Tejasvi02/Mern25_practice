@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import NotificationBell from "./NotificationBell";
 
-const Header = ({ user, cart }) => {
+const Header = ({ user, cart, notificationsFromStore }) => {
   const usrName = user && user.userName ? user.userName : "";
 
   const staticNotifications = [
@@ -16,8 +16,12 @@ const Header = ({ user, cart }) => {
 
   const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
   console.log(totalQty)
-  const allNotifications = [`Items in Cart: ${totalQty}`, ...staticNotifications];
-
+  
+  const allNotifications = [
+    ...(totalQty > 0 ? [`Items in Cart: ${totalQty}`] : []), // only add if totalQty > 0
+    ...notificationsFromStore,
+    ...staticNotifications
+  ];
 
   return (
     <>
@@ -56,7 +60,8 @@ const Header = ({ user, cart }) => {
 
 const mapStateToProps = (store) => ({
   user: store.userReducer.user,
-  cart: store.cartReducer || [], // ✅ CORRECT
+  cart: store.cartReducer || [], 
+  notificationsFromStore: store.notificationReducer || [],
 });
 
 export default connect(mapStateToProps)(Header);

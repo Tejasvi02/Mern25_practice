@@ -4,6 +4,7 @@ import { fetchRecentOrders, cancelOrder } from "../../State/Order/RecentOrderAct
 import { useNavigate } from "react-router-dom";
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from "axios";
+import { addNotification } from "../../State/Notification/NotificationAction";
 
 const RecentOrders = () => {
     const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const RecentOrders = () => {
 
     const handleCancel = (orderId) => {
         dispatch(cancelOrder(orderId));
+        dispatch(addNotification(`Order #${orderId} has been cancelled`));
     };
 
     const isCancelable = (createdAt) => {
