@@ -15,6 +15,9 @@ import Checkout from "./ApplicationComponent/Checkout/CheckoutComponent.js";
 import CouponComponent from "./ApplicationComponent/Coupon/CouponComponent"; 
 import Hooks from "./Hooks/UnderstandingHooks.js";
 import RecentOrders from "./ApplicationComponent/Order/RecentOrdersComponent.js"
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default class ApplicationComponent extends Component {
 
@@ -47,25 +50,39 @@ export default class ApplicationComponent extends Component {
         
         console.log("Render method is called!!")
         return( //vitual dom or jsx code (javascript like xml structure)
-            <Router>                
-                <div className="topdiv">
-                    <Header />
-                        <Routes>
-                            <Route path="/" element={<Home user={this.state.user} />}/>
-                            <Route path="home" element={<Home user={this.state.user} />}/>
-                            <Route path="userhook" element={<UserHookComponent />}/>
-                            <Route path="product" element={<ProductComponent />}/>
-                            <Route path="checkout" element={<Checkout />}/>
-                            <Route path="cart" element={<CartComponent />}/>
-                            <Route path="coupon" element={<CouponComponent />} />
-                            <Route path="/recent-orders" element={<RecentOrders />} />
-                            <Route path="about" element={<About />}/>
-                            <Route path="hook" element={<Hooks />}/>
-                            <Route path="*" element={<NotFound />} />
-                        </Routes>
-                    <Footer sessionName={this.sessionName}/>
-                </div>    
-            </Router>      
+        <Router>
+        <div className="topdiv">
+            <Header />
+
+            {/* Global ToastContainer */}
+            <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick
+            pauseOnHover
+            draggable
+            />
+
+            <Routes>
+            <Route path="/" element={<Home user={this.state.user} />} />
+            <Route path="home" element={<Home user={this.state.user} />} />
+            <Route path="userhook" element={<UserHookComponent />} />
+            <Route path="product" element={<ProductComponent />} />
+            <Route path="checkout" element={<Checkout />} />
+            <Route path="cart" element={<CartComponent />} />
+            <Route path="coupon" element={<CouponComponent />} />
+            <Route path="/recent-orders" element={<RecentOrders />} />
+            <Route path="about" element={<About />} />
+            <Route path="hook" element={<Hooks />} />
+            <Route path="*" element={<NotFound />} />
+            </Routes>
+
+            <Footer sessionName={this.sessionName} />
+        </div>
+        </Router>
+     
         )
     }
 }

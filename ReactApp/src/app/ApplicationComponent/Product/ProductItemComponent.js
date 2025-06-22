@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { AddItemToCart } from "../../State/Cart/CartAction";
+import { toast } from 'react-toastify';
 
 const ProductItemComponent = ({ product }) => {
     const [reviews, setReviews] = useState([]);
@@ -12,7 +13,10 @@ const ProductItemComponent = ({ product }) => {
 
     let addItemToCart = (product)=>{
         dispatchToAddProduct(AddItemToCart(product));
-        alert(`${product.name} added to cart!`);        
+        alert(`${product.name} added to cart!`); 
+        toast.success(`${product.name} added to cart 🛒`, {
+            position: "top-right"
+        });       
     }
 
     const fetchReviews = async () => {
